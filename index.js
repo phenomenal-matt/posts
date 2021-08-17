@@ -1,5 +1,7 @@
 const fs = require('fs');
 const axios = require('axios');
+const { convertArrayToCSV } = require('convert-array-to-csv');
+const converter = require('convert-array-to-csv');
 
 async function prepareCsv() {
   // Get all the posts
@@ -29,16 +31,13 @@ async function prepareCsv() {
     });
 
     //console.log(transformedPosts);
-    fs.writeFile(
-      'transformedPosts.csv',
-      JSON.stringify(transformedPosts),
-      (err) => {
-        if (err) console.log(err);
-        else {
-          console.log('File written successfully\n');
-        }
+    const csvFromArrayOfObjects = convertArrayToCSV(transformedPosts);
+    fs.writeFile('transformedPosts.csv', csvFromArrayOfObjects, (err) => {
+      if (err) console.log(err);
+      else {
+        console.log('File written successfully\n');
       }
-    );
+    });
   } catch (error) {
     console.error(error);
   }
